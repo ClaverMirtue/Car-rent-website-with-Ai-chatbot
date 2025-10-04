@@ -1,0 +1,214 @@
+{% extends 'carapp/base.html' %}
+
+{% block title %}{{ car.name }}{% endblock %}
+
+{% block content %}
+<div class="car-detail-hero" style="background-image: url('{{ car.image1.url }}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInUp">{{ car.name }}</h1>
+            <div class="car-badges animate__animated animate__fadeInUp" style="animation-delay: 200ms">
+                <span class="badge bg-primary"><i class="fas fa-car"></i> {{ car.company.name }}</span>
+                <span class="badge bg-info"><i class="fas fa-tag"></i> {{ car.category.name }}</span>
+                <span class="badge bg-success"><i class="fas fa-calendar"></i> {{ car.model_year }}</span>
+                {% if car.is_available %}
+                    <span class="badge bg-success"><i class="fas fa-check-circle"></i> Available</span>
+                {% else %}
+                    <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Not Available</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Car Details Column -->
+        <div class="col-lg-8">
+            <!-- Car Images Gallery -->
+            <div class="car-gallery mb-4">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <div class="gallery-main">
+                            <img src="{{ car.image1.url }}" alt="{{ car.name }}" class="img-fluid rounded shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="gallery-thumbs">
+                            {% if car.image2 %}
+                            <div class="thumb-item mb-3">
+                                <img src="{{ car.image2.url }}" alt="{{ car.name }}" class="img-fluid rounded shadow-sm">
+                            </div>
+                            {% endif %}
+                            {% if car.image3 %}
+                            <div class="thumb-item">
+                                <img src="{{ car.image3.url }}" alt="{{ car.name }}" class="img-fluid rounded shadow-sm">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car Description -->
+            <div class="car-description card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">About This Car</h3>
+                    <p class="card-text">{{ car.description }}</p>
+                    
+                    <div class="car-features mt-4">
+                        <h4>Features & Specifications</h4>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Transmission: {{ car.get_transmission_display }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Seats: {{ car.seats }}</span>
+                                </div>
+                            </div>
+                            <!-- Add more features as needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratings & Reviews -->
+            <div class="ratings-section card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Ratings & Reviews</h3>
+                    
+                    <!-- Average Rating Display -->
+                    <div class="average-rating mb-4">
+                        <div class="rating-number">
+                            <span class="display-4">{{ car.average_rating|floatformat:1 }}</span>
+                            <div class="rating-stars">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= car.average_rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="text-muted">Based on {{ ratings|length }} reviews</span>
+                        </div>
+                    </div>
+
+                    <!-- Rating Form -->
+                    {% if user.is_authenticated %}
+                    <div class="rating-form mb-4">
+                        <h4>Write a Review</h4>
+                        <form method="post" action="{% url 'carapp:rate_car' car.id %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating</label>
+                                <div class="rating-input">
+                                    {% for i in "54321" %}
+                                    <input type="radio" name="rating" value="{{ forloop.counter }}" id="star{{ forloop.counter }}" {% if user_rating.rating == forloop.counter %}checked{% endif %}>
+                                    <label for="star{{ forloop.counter }}"><i class="fas fa-star"></i></label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Your Review</label>
+                                <textarea class="form-control" name="comment" id="comment" rows="3">{{ user_rating.comment }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    <!-- Reviews List -->
+                    <div class="reviews-list">
+                        {% for rating in ratings %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="reviewer-name">{{ rating.user.username }}</span>
+                                </div>
+                                <div class="review-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating.rating %}
+                                            <i class="fas fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-warning"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>{{ rating.comment }}</p>
+                                <span class="review-date text-muted">{{ rating.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <div class="col-lg-4">
+            <div class="booking-card card shadow-sm sticky-top">
+                <div class="card-body">
+                    <h3 class="card-title">Book This Car</h3>
+                    
+                    <div class="pricing-info mb-4">
+                        <div class="price-item">
+                            <span class="label">Hourly Rate</span>
+                            <span class="price">Rs. {{ car.hourly_rate }}</span>
+                        </div>
+                        <div class="price-item">
+                            <span class="label">Daily Rate</span>
+                            <span class="price">Rs. {{ car.daily_rate }}</span>
+                        </div>
+                        <div class="price-item">
+                            <span class="label">Monthly Rate</span>
+                            <span class="price">Rs. {{ car.monthly_rate }}</span>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'carapp:book_car' car.id %}" class="booking-form">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Rental Type</label>
+                            <select name="rental_type" class="form-select" required>
+                                <option value="HOURLY">Hourly</option>
+                                <option value="DAILY">Daily</option>
+                                <option value="MONTHLY">Monthly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" name="start_date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" name="start_time" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Duration</label>
+                            <input type="number" name="duration" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                    </form>
+                    {% else %}
+                    <div class="text-center">
+                        <p>Please login to book this car</p>
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Login to Book</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,132 @@
+{% extends 'carapp/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="about-hero">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="animate__animated animate__fadeInUp">About Car Rental</h1>
+            <p class="lead animate__animated animate__fadeInUp" style="animation-delay: 200ms">
+                Your Trusted Partner in Premium Car Rentals Since 2010
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Mission Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 animate__animated animate__fadeInLeft">
+            <div class="about-content">
+                <h2 class="section-title">Our Mission</h2>
+                <p class="lead">Providing exceptional car rental experiences with quality vehicles and outstanding service.</p>
+                <p>We strive to make car rentals accessible, convenient, and reliable for all our customers. Our commitment to excellence and customer satisfaction sets us apart in the industry.</p>
+                
+                <div class="achievement-stats mt-4">
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <div class="achievement-card">
+                                <div class="number">5000+</div>
+                                <div class="label">Happy Customers</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="achievement-card">
+                                <div class="number">500+</div>
+                                <div class="label">Premium Cars</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="achievement-card">
+                                <div class="number">15+</div>
+                                <div class="label">Years Experience</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="achievement-card">
+                                <div class="number">24/7</div>
+                                <div class="label">Customer Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 animate__animated animate__fadeInRight">
+            <div class="about-image">
+                <img src="{% static 'carapp/images/about-mission.jpg' %}" alt="Our Mission" class="img-fluid rounded-3 shadow">
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="why-choose-us py-5">
+        <h2 class="section-title text-center mb-5">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-3 animate__animated animate__fadeInUp">
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h4>Wide Selection</h4>
+                    <p>Choose from our extensive fleet of vehicles to find your perfect match.</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 200ms">
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Safe & Reliable</h4>
+                    <p>All vehicles undergo regular maintenance and safety checks.</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 400ms">
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>24/7 Support</h4>
+                    <p>Our customer support team is always ready to assist you.</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 600ms">
+                <div class="feature-card text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h4>Best Rates</h4>
+                    <p>Competitive prices and flexible rental options.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="team-section py-5">
+        <h2 class="section-title text-center mb-5">Our Team</h2>
+        <div class="row g-4">
+            <div class="col-md-3 animate__animated animate__fadeInUp">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="{% static 'carapp/images/team1.jpg' %}" alt="Team Member">
+                    </div>
+                    <div class="team-info">
+                        <h4>John Doe</h4>
+                        <p>CEO & Founder</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more team members similarly -->
+        </div>
+    </div>
+</div>
+{% endblock %} 

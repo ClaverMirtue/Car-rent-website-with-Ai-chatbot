@@ -1,0 +1,158 @@
+{% extends 'carapp/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Carousel -->
+<div class="hero-section">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'carapp/images/ho.webp' %}" class="d-block w-100" alt="Luxury Cars">
+                <div class="carousel-caption animate__animated animate__fadeInUp">
+                    <h1>Luxury Cars for Every Occasion</h1>
+                    <p>Experience the thrill of driving premium vehicles</p>
+                    <a href="{% url 'carapp:car_list' %}" class="btn btn-primary btn-lg">Explore Cars</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'carapp/images/honda.webp' %}" class="d-block w-100" alt="Family Cars">
+                <div class="carousel-caption animate__animated animate__fadeInUp">
+                    <h1>Perfect for Family Trips</h1>
+                    <p>Comfortable and spacious vehicles for your family</p>
+                    <a href="{% url 'carapp:category_list' %}" class="btn btn-primary btn-lg">View Categories</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'carapp/images/honda.webp' %}" class="d-block w-100" alt="Sports Cars">
+                <div class="carousel-caption animate__animated animate__fadeInUp">
+                    <h1>Sports Cars Collection</h1>
+                    <p>Feel the power of performance vehicles</p>
+                    <a href="{% url 'carapp:car_list' %}" class="btn btn-primary btn-lg">Book Now</a>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="container search-container">
+    <div class="search-section">
+        <h2 class="text-center mb-4">Find Your Perfect Car</h2>
+        <form action="{% url 'carapp:search_cars' %}" method="GET" class="row g-3">
+            <div class="col-md-4">
+                <select class="form-select" name="category">
+                    <option value="">Select Category</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="q" placeholder="Search by name, brand...">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Search Cars</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<section class="categories-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Browse by Category</h2>
+        <div class="row g-4">
+            {% for category in categories %}
+            <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter|add:2 }}00ms">
+                <div class="category-card h-100">
+                    <div class="icon-wrapper mb-4">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description|truncatewords:20 }}</p>
+                    <a href="{% url 'carapp:category_detail' category.id %}" class="btn btn-outline-primary">View Cars</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Cars Section -->
+<section class="featured-cars-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Cars</h2>
+        <div class="row g-4">
+            {% for car in featured_cars %}
+            <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter|add:2 }}00ms">
+                <div class="car-card h-100">
+                    <div class="car-image">
+                        <img src="{{ car.image1.url }}" alt="{{ car.name }}" class="img-fluid">
+                        <div class="car-overlay">
+                            <div class="car-price">
+                                <span>Starting from</span>
+                                <h4>Rs. {{ car.hourly_rate }}/hour</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-details">
+                        <h3>{{ car.name }}</h3>
+                        <div class="car-info">
+                            <span><i class="fas fa-car"></i> {{ car.company.name }}</span>
+                            <span><i class="fas fa-calendar"></i> {{ car.model_year }}</span>
+                            <span><i class="fas fa-star"></i> {{ car.average_rating|floatformat:1 }}</span>
+                        </div>
+                        <a href="{% url 'carapp:car_detail' car.id %}" class="btn btn-primary w-100 mt-3">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-3 animate__animated animate__fadeInUp">
+                <div class="feature-card">
+                    <i class="fas fa-car-side"></i>
+                    <h4>Wide Selection</h4>
+                    <p>Choose from our extensive fleet of vehicles</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 200ms">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Safe & Secure</h4>
+                    <p>All vehicles are regularly maintained</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 400ms">
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>24/7 Support</h4>
+                    <p>Round the clock customer service</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: 600ms">
+                <div class="feature-card">
+                    <i class="fas fa-wallet"></i>
+                    <h4>Best Rates</h4>
+                    <p>Competitive prices guaranteed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
